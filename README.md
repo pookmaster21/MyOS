@@ -8,7 +8,7 @@
 * mtools (for mcopy)
 * dosfstools (for Fat)
 * openwatcom-v2
-* qemu-system-x86 (for running the img)
+* qemu-system-i386 (for running the img)
 
 ## Build instructions
 
