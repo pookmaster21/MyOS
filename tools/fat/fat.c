@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef uint8_t bool;
+typedef uint8_t Bool;
 #define true 1
 #define false 0
 
@@ -56,26 +56,26 @@ uint8_t *g_Fat = NULL;
 DirectoryEntry *g_RootDirectory = NULL;
 uint32_t g_RootDirectoryEnd;
 
-bool readBootSector(FILE *disk) {
+Bool readBootSector(FILE *disk) {
   return fread(&g_BootSector, sizeof(g_BootSector), 1, disk) > 0;
 }
 
-bool readSectors(FILE *disk, uint32_t lba, uint32_t count, void *bufferOut) {
-  bool ok = true;
+Bool readSectors(FILE *disk, uint32_t lba, uint32_t count, void *bufferOut) {
+  Bool ok = true;
   ok = ok && (fseek(disk, lba * g_BootSector.BytesPerSector, SEEK_SET) == 0);
   ok = ok &&
        (fread(bufferOut, g_BootSector.BytesPerSector, count, disk) == count);
   return ok;
 }
 
-bool readFat(FILE *disk) {
+Bool readFat(FILE *disk) {
   g_Fat = (uint8_t *)malloc(g_BootSector.SectorsPerFat *
                             g_BootSector.BytesPerSector);
   return readSectors(disk, g_BootSector.ReservedSectors,
                      g_BootSector.SectorsPerFat, g_Fat);
 }
 
-bool readRootDirectory(FILE *disk) {
+Bool readRootDirectory(FILE *disk) {
   uint32_t lba = g_BootSector.ReservedSectors +
                  g_BootSector.SectorsPerFat * g_BootSector.FatCount;
   uint32_t size = sizeof(DirectoryEntry) * g_BootSector.DirEntryCount;
@@ -98,8 +98,8 @@ DirectoryEntry *findFile(const char *name) {
   return NULL;
 }
 
-bool readFile(DirectoryEntry *fileEntry, FILE *disk, uint8_t *outputBuffer) {
-  bool ok = true;
+Bool readFile(DirectoryEntry *fileEntry, FILE *disk, uint8_t *outputBuffer) {
+  Bool ok = true;
   uint16_t currentCluster = fileEntry->FirstClusterLow;
 
   do {
